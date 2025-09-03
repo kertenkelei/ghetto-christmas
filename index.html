@@ -48,6 +48,7 @@
             position: absolute;
             left: 50%;
             transform: translateX(-50%);
+            z-index: 1;
         }
         
         /* Меню категорий */
@@ -100,6 +101,11 @@
         }
         
         /* Корзина */
+        .cart-wrapper {
+            position: relative;
+            z-index: 1000;
+        }
+        
         .cart-icon {
             font-size: 20px;
             cursor: pointer;
@@ -156,7 +162,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: #f5f5f5; /* Оставляем только фон контейнера */
+            background-color: #f5f5f5;
         }
         
         .product-image {
@@ -255,13 +261,14 @@
                 order: 1;
                 width: 100%;
                 margin: 15px 0;
+                text-align: center;
             }
             
             .categories-menu {
                 order: 0;
             }
             
-            .cart-icon {
+            .cart-wrapper {
                 order: 2;
             }
         }
@@ -269,12 +276,14 @@
         /* Адаптивность для мобильных */
         @media (max-width: 600px) {
             body {
-                padding: 20px 15px;
+                padding: 15px 10px;
             }
             
             .top-nav {
                 margin-bottom: 40px;
                 padding: 10px 0;
+                flex-wrap: nowrap;
+                justify-content: space-between;
             }
             
             .products-grid {
@@ -285,12 +294,28 @@
             
             .image-container {
                 height: 220px;
-                background-color: transparent; /* Убираем фон на мобильных */
+                background-color: transparent;
             }
             
             .brand-name {
-                font-size: 20px;
-                margin: 10px 0;
+                font-size: 18px;
+                margin: 0;
+                position: absolute;
+                left: 50%;
+                transform: translateX(-50%);
+                width: auto;
+                max-width: 60%;
+                order: 0;
+            }
+            
+            .categories-menu {
+                order: 1;
+                z-index: 1001;
+            }
+            
+            .cart-wrapper {
+                order: 2;
+                z-index: 1001;
             }
             
             .collections {
@@ -316,19 +341,20 @@
             }
             
             .menu-toggle {
-                padding: 10px;
+                padding: 8px;
                 border: none;
-                font-size: 18px;
+                font-size: 16px;
+                background: none;
             }
             
             .categories-dropdown {
-                left: -50px;
-                min-width: 180px;
+                left: 0;
+                min-width: 160px;
             }
             
             /* Улучшения для корзины на мобильных */
             .cart-icon {
-                font-size: 22px;
+                font-size: 20px;
             }
             
             .cart-count {
@@ -343,7 +369,8 @@
         /* Дополнительные улучшения для очень маленьких экранов */
         @media (max-width: 400px) {
             .brand-name {
-                font-size: 18px;
+                font-size: 16px;
+                letter-spacing: 1px;
             }
             
             .product-title {
@@ -356,6 +383,14 @@
             
             .image-container {
                 height: 200px;
+            }
+            
+            .menu-toggle {
+                padding: 6px;
+            }
+            
+            .cart-icon {
+                font-size: 18px;
             }
         }
     </style>
@@ -380,9 +415,11 @@
             
             <div class="brand-name">GHETTO CHRISTMAS</div>
             
-            <div class="cart-icon">
-                <i class="fas fa-shopping-bag"></i>
-                <span class="cart-count">0</span>
+            <div class="cart-wrapper">
+                <div class="cart-icon">
+                    <i class="fas fa-shopping-bag"></i>
+                    <span class="cart-count">0</span>
+                </div>
             </div>
         </nav>
 
