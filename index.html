@@ -44,7 +44,7 @@
             text-transform: uppercase;
             letter-spacing: 2px;
             text-align: center;
-            font-weight: bold; /* Добавлен жирный шрифт */
+            font-weight: bold;
             position: absolute;
             left: 50%;
             transform: translateX(-50%);
@@ -53,6 +53,7 @@
         /* Меню категорий */
         .categories-menu {
             position: relative;
+            z-index: 1000;
         }
         
         .menu-toggle {
@@ -103,6 +104,8 @@
             font-size: 20px;
             cursor: pointer;
             position: relative;
+            display: flex;
+            align-items: center;
         }
         
         .cart-count {
@@ -118,6 +121,12 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .cart-count.show {
+            opacity: 1;
         }
         
         /* Коллекции */
@@ -141,18 +150,18 @@
         
         .image-container {
             width: 100%;
-            height: 300px; /* Увеличена высота */
+            height: 300px;
             margin-bottom: 15px;
             overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
-            /* Убран фоновый цвет */
+            background-color: #f5f5f5;
         }
         
         .product-image {
-            max-width: 90%; /* Увеличен масштаб */
-            max-height: 90%; /* Увеличен масштаб */
+            max-width: 90%;
+            max-height: 90%;
             object-fit: contain;
         }
         
@@ -219,41 +228,80 @@
             text-align: right;
         }
         
-        /* Адаптивность */
+        /* Адаптивность для планшетов */
         @media (max-width: 900px) {
-            .products-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            
             body {
                 padding: 30px;
+            }
+            
+            .products-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 30px;
             }
             
             .image-container {
                 height: 250px;
             }
             
+            /* Навигация для планшетов */
+            .top-nav {
+                flex-wrap: wrap;
+                justify-content: space-between;
+            }
+            
             .brand-name {
                 position: static;
                 transform: none;
-                margin: 0 auto;
+                order: 1;
+                width: 100%;
+                margin: 15px 0;
             }
             
-            .top-nav {
-                flex-direction: column;
-                gap: 15px;
+            .categories-menu {
+                order: 0;
+            }
+            
+            .cart-icon {
+                order: 2;
             }
         }
         
+        /* Адаптивность для мобильных */
         @media (max-width: 600px) {
+            body {
+                padding: 20px 15px;
+            }
+            
+            .top-nav {
+                margin-bottom: 40px;
+                padding: 10px 0;
+            }
+            
             .products-grid {
                 grid-template-columns: 1fr;
+                gap: 30px;
+                margin-top: 30px;
+            }
+            
+            .image-container {
+                height: 220px;
+            }
+            
+            .brand-name {
+                font-size: 20px;
+                margin: 10px 0;
+            }
+            
+            .collections {
+                margin-bottom: 50px;
             }
             
             footer {
                 flex-direction: column;
                 gap: 15px;
                 text-align: center;
+                margin-top: 50px;
+                padding-top: 20px;
             }
             
             .footer-left, .footer-center, .footer-right {
@@ -261,13 +309,80 @@
                 text-align: center;
             }
             
-            body {
-                padding: 20px;
+            /* Мобильное меню */
+            .menu-toggle span {
+                display: none;
+            }
+            
+            .menu-toggle {
+                padding: 10px;
+                border: none;
+                font-size: 18px;
+            }
+            
+            .categories-dropdown {
+                left: -50px;
+                min-width: 180px;
+            }
+            
+            /* Улучшения для корзины на мобильных */
+            .cart-icon {
+                font-size: 22px;
+            }
+            
+            .cart-count {
+                top: -6px;
+                right: -6px;
+                width: 16px;
+                height: 16px;
+                font-size: 10px;
+            }
+        }
+
+        /* Дополнительные улучшения для очень маленьких экранов */
+        @media (max-width: 400px) {
+            .brand-name {
+                font-size: 18px;
+            }
+            
+            .product-title {
+                font-size: 13px;
+            }
+            
+            .product-price {
+                font-size: 15px;
             }
             
             .image-container {
-                height: 220px;
+                height: 200px;
             }
+        }
+
+        /* Стили для обеспечения загрузки изображений */
+        .image-container {
+            position: relative;
+        }
+        
+        .image-container::before {
+            content: "Загрузка изображения";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #999;
+            font-size: 12px;
+            text-transform: uppercase;
+        }
+        
+        /* Убираем псевдоэлемент, когда изображение загружено */
+        .image-container img.loaded {
+            position: relative;
+            z-index: 2;
         }
     </style>
 </head>
@@ -278,7 +393,7 @@
             <div class="categories-menu">
                 <button class="menu-toggle">
                     <span>Меню</span>
-                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-bars"></i>
                 </button>
                 <div class="categories-dropdown">
                     <a href="#">Худи</a>
@@ -303,7 +418,7 @@
                 <!-- Товар 1 -->
                 <div class="product-card">
                     <div class="image-container">
-                        <img src="photo/img-1.png" class="product-image" alt="Футболка">
+                        <img src="photo/img-1.png" class="product-image" alt="Футболка" onload="this.classList.add('loaded')">
                     </div>
                     <div class="product-brand">PHRARI</div>
                     <h3 class="product-title">DYED T-SHIRT "ANTAGONIST"</h3>
@@ -314,7 +429,7 @@
                 <!-- Товар 2 -->
                 <div class="product-card">
                     <div class="image-container">
-                        <img src="photo/img-3.png" class="product-image" alt="Худи">
+                        <img src="photo/img-3.png" class="product-image" alt="Худи" onload="this.classList.add('loaded')">
                     </div>
                     <div class="product-brand">PHRARI</div>
                     <h3 class="product-title">HOODIE "I LIKE"</h3>
@@ -325,7 +440,7 @@
                 <!-- Товар 3 -->
                 <div class="product-card">
                     <div class="image-container">
-                        <img src="photo/img-6-Photoroom.png" class="product-image" alt="Джинсы">
+                        <img src="photo/img-6-Photoroom.png" class="product-image" alt="Джинсы" onload="this.classList.add('loaded')">
                     </div>
                     <div class="product-brand">DX</div>
                     <h3 class="product-title">DX "BASTARD" JEANS</h3>
@@ -336,7 +451,7 @@
                 <!-- Товар 4 -->
                 <div class="product-card">
                     <div class="image-container">
-                        <img src="photo/img-5.png" class="product-image" alt="Куртка">
+                        <img src="photo/img-5.png" class="product-image" alt="Куртка" onload="this.classList.add('loaded')">
                     </div>
                     <div class="product-brand">GHETTO</div>
                     <h3 class="product-title">WINTER PARKA "FROST"</h3>
@@ -347,7 +462,7 @@
                 <!-- Товар 5 -->
                 <div class="product-card">
                     <div class="image-container">
-                        <img src="photo/img-2.png" class="product-image" alt="Футболка">
+                        <img src="photo/img-2.png" class="product-image" alt="Футболка" onload="this.classList.add('loaded')">
                     </div>
                     <div class="product-brand">GHETTO</div>
                     <h3 class="product-title">BASIC T-SHIRT "ESSENTIAL"</h3>
@@ -358,7 +473,7 @@
                 <!-- Товар 6 -->
                 <div class="product-card">
                     <div class="image-container">
-                        <img src="photo/img-4-Photoroom.png" class="product-image" alt="Шапка">
+                        <img src="photo/img-4-Photoroom.png" class="product-image" alt="Шапка" onload="this.classList.add('loaded')">
                     </div>
                     <div class="product-brand">GHETTO</div>
                     <h3 class="product-title">BEANIE "URBAN"</h3>
@@ -389,7 +504,8 @@
         const menuToggle = document.querySelector('.menu-toggle');
         const categoriesDropdown = document.querySelector('.categories-dropdown');
         
-        menuToggle.addEventListener('click', function() {
+        menuToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
             categoriesDropdown.classList.toggle('show');
         });
         
@@ -405,8 +521,60 @@
         const cartCount = document.querySelector('.cart-count');
         let cartItems = 0;
         
+        // Функция для обновления отображения счетчика
+        function updateCartCount() {
+            cartCount.textContent = cartItems;
+            if (cartItems === 0) {
+                cartCount.classList.remove('show');
+            } else {
+                cartCount.classList.add('show');
+            }
+        }
+        
+        // Инициализация счетчика
+        updateCartCount();
+        
         cartIcon.addEventListener('click', function() {
             alert('Корзина. В реальном сайте здесь будет отображение добавленных товаров.');
+        });
+
+        // Замена иконки меню на мобильных устройствах
+        function updateMenuIcon() {
+            const menuIcon = document.querySelector('.menu-toggle i');
+            if (window.innerWidth <= 600) {
+                menuIcon.className = 'fas fa-bars';
+                if (document.querySelector('.menu-toggle span')) {
+                    document.querySelector('.menu-toggle span').style.display = 'none';
+                }
+            } else {
+                menuIcon.className = 'fas fa-chevron-down';
+                if (document.querySelector('.menu-toggle span')) {
+                    document.querySelector('.menu-toggle span').style.display = 'inline';
+                }
+            }
+        }
+
+        // Вызов при загрузке и изменении размера окна
+        window.addEventListener('load', updateMenuIcon);
+        window.addEventListener('resize', updateMenuIcon);
+        
+        // Проверка загрузки изображений
+        document.addEventListener('DOMContentLoaded', function() {
+            const images = document.querySelectorAll('.product-image');
+            images.forEach(img => {
+                // Проверяем, загрузилось ли изображение
+                if (img.complete) {
+                    img.classList.add('loaded');
+                } else {
+                    img.addEventListener('load', function() {
+                        this.classList.add('loaded');
+                    });
+                    img.addEventListener('error', function() {
+                        console.error('Ошибка загрузки изображения:', this.src);
+                        // Можно добавить изображение-заглушку при ошибке
+                    });
+                }
+            });
         });
     </script>
 </body>
