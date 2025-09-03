@@ -156,7 +156,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: #f5f5f5;
+            background-color: #f5f5f5; /* Оставляем только фон контейнера */
         }
         
         .product-image {
@@ -285,6 +285,7 @@
             
             .image-container {
                 height: 220px;
+                background-color: transparent; /* Убираем фон на мобильных */
             }
             
             .brand-name {
@@ -357,33 +358,6 @@
                 height: 200px;
             }
         }
-
-        /* Стили для обеспечения загрузки изображений */
-        .image-container {
-            position: relative;
-        }
-        
-        .image-container::before {
-            content: "Загрузка изображения";
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #f5f5f5;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: #999;
-            font-size: 12px;
-            text-transform: uppercase;
-        }
-        
-        /* Убираем псевдоэлемент, когда изображение загружено */
-        .image-container img.loaded {
-            position: relative;
-            z-index: 2;
-        }
     </style>
 </head>
 <body>
@@ -418,7 +392,7 @@
                 <!-- Товар 1 -->
                 <div class="product-card">
                     <div class="image-container">
-                        <img src="photo/img-1.png" class="product-image" alt="Футболка" onload="this.classList.add('loaded')">
+                        <img src="photo/img-1.png" class="product-image" alt="Футболка">
                     </div>
                     <div class="product-brand">PHRARI</div>
                     <h3 class="product-title">DYED T-SHIRT "ANTAGONIST"</h3>
@@ -429,7 +403,7 @@
                 <!-- Товар 2 -->
                 <div class="product-card">
                     <div class="image-container">
-                        <img src="photo/img-3.png" class="product-image" alt="Худи" onload="this.classList.add('loaded')">
+                        <img src="photo/img-3.png" class="product-image" alt="Худи">
                     </div>
                     <div class="product-brand">PHRARI</div>
                     <h3 class="product-title">HOODIE "I LIKE"</h3>
@@ -440,7 +414,7 @@
                 <!-- Товар 3 -->
                 <div class="product-card">
                     <div class="image-container">
-                        <img src="photo/img-6-Photoroom.png" class="product-image" alt="Джинсы" onload="this.classList.add('loaded')">
+                        <img src="photo/img-6-Photoroom.png" class="product-image" alt="Джинсы">
                     </div>
                     <div class="product-brand">DX</div>
                     <h3 class="product-title">DX "BASTARD" JEANS</h3>
@@ -451,7 +425,7 @@
                 <!-- Товар 4 -->
                 <div class="product-card">
                     <div class="image-container">
-                        <img src="photo/img-5.png" class="product-image" alt="Куртка" onload="this.classList.add('loaded')">
+                        <img src="photo/img-5.png" class="product-image" alt="Куртка">
                     </div>
                     <div class="product-brand">GHETTO</div>
                     <h3 class="product-title">WINTER PARKA "FROST"</h3>
@@ -462,7 +436,7 @@
                 <!-- Товар 5 -->
                 <div class="product-card">
                     <div class="image-container">
-                        <img src="photo/img-2.png" class="product-image" alt="Футболка" onload="this.classList.add('loaded')">
+                        <img src="photo/img-2.png" class="product-image" alt="Футболка">
                     </div>
                     <div class="product-brand">GHETTO</div>
                     <h3 class="product-title">BASIC T-SHIRT "ESSENTIAL"</h3>
@@ -473,7 +447,7 @@
                 <!-- Товар 6 -->
                 <div class="product-card">
                     <div class="image-container">
-                        <img src="photo/img-4-Photoroom.png" class="product-image" alt="Шапка" onload="this.classList.add('loaded')">
+                        <img src="photo/img-4-Photoroom.png" class="product-image" alt="Шапка">
                     </div>
                     <div class="product-brand">GHETTO</div>
                     <h3 class="product-title">BEANIE "URBAN"</h3>
@@ -557,25 +531,6 @@
         // Вызов при загрузке и изменении размера окна
         window.addEventListener('load', updateMenuIcon);
         window.addEventListener('resize', updateMenuIcon);
-        
-        // Проверка загрузки изображений
-        document.addEventListener('DOMContentLoaded', function() {
-            const images = document.querySelectorAll('.product-image');
-            images.forEach(img => {
-                // Проверяем, загрузилось ли изображение
-                if (img.complete) {
-                    img.classList.add('loaded');
-                } else {
-                    img.addEventListener('load', function() {
-                        this.classList.add('loaded');
-                    });
-                    img.addEventListener('error', function() {
-                        console.error('Ошибка загрузки изображения:', this.src);
-                        // Можно добавить изображение-заглушку при ошибке
-                    });
-                }
-            });
-        });
     </script>
 </body>
 </html>
