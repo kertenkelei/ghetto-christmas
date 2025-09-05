@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Товар - Ghetto Christmas</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Courier New', monospace;
+            font-weight: normal;
+        }
+        
+        body {
+            background-color: #ffffff;
+            color: #000000;
+            line-height: 1.2;
+            overflow-x: hidden;
+            padding: 40px;
+            font-size: 14px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        /* Навигация */
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            padding: 15px 0;
+            position: relative;
+        }
+        
+        .brand-name {
+            font-size: 24px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-align: center;
+            font-weight: bold;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .back-button {
+            background: none;
+            border: 1px solid #000;
+            padding: 8px 15px;
+            cursor: pointer;
+            font-size: 14px;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            color: #000;
+        }
+        
+        /* Корзина */
+        .cart-icon {
+            font-size: 20px;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #000;
+            color: #fff;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Детали товара */
+        .product-detail {
+            display: flex;
+            gap: 40px;
+            margin-bottom: 80px;
+        }
+        
+        .product-image-large {
+            flex: 1;
+            text-align: center;
+        }
+        
+        .product-image-large img {
+            max-width: 100%;
+            max-height: 500px;
+            object-fit: contain;
+        }
+        
+        .product-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .product-info-brand {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .product-info-title {
+            font-size: 24px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: bold;
+        }
+        
+        .product-info-price {
+            font-weight: bold;
+            font-size: 20px;
+            margin: 10px 0;
+        }
+        
+        .product-info-description {
+            font-size: 16px;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+        
+        .size-selector {
+            margin: 15px 0;
+        }
+        
+        .size-selector select {
+            padding: 8px 15px;
+            border: 1px solid #000;
+            background: transparent;
+            font-size: 14px;
+        }
+        
+        .add-to-cart {
+            padding: 12px 30px;
+            background: transparent;
+            color: #000;
+            border: 1px solid #000;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+        
+        .add-to-cart:hover {
+            background: #000;
+            color: #fff;
+        }
+        
+        /* Футер */
+        footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 80px;
+            padding-top: 30px;
+            border-top: 1px solid #000;
+            font-size: 12px;
+            text-transform: uppercase;
+        }
+        
+        .footer-left, .footer-center, .footer-right {
+            width: 30%;
+        }
+        
+        .footer-center {
+            text-align: center;
+        }
+        
+        .footer-right {
+            text-align: right;
+        }
+        
+        @media (max-width: 900px) {
+            .product-detail {
+                flex-direction: column;
+            }
+            
+            body {
+                padding: 30px;
+            }
+            
+            .brand-name {
+                position: static;
+                transform: none;
+                margin: 0 auto;
+            }
+            
+            .top-nav {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            footer {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+            
+            .footer-left, .footer-center, .footer-right {
+                width: 100%;
+                text-align: center;
+            }
+            
+            body {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Навигация -->
+        <nav class="top-nav">
+            <a href="index.html" class="back-button">
+                <i class="fas fa-arrow-left"></i>
+                <span>Назад</span>
+            </a>
+            
+            <div class="brand-name">GHETTO CHRISTMAS</div>
+            
+            <div class="cart-icon" id="cart-icon">
+                <i class="fas fa-shopping-bag"></i>
+                <span class="cart-count" id="cart-count">0</span>
+            </div>
+        </nav>
+
+        <!-- Детали товара -->
+        <div class="product-detail">
+            <div class="product-image-large">
+                <img id="product-image" src="" alt="Изображение товара">
+            </div>
+            <div class="product-info">
+                <div class="product-info-brand" id="product-brand"></div>
+                <h1 class="product-info-title" id="product-title"></h1>
+                <div class="product-info-price" id="product-price"></div>
+                <p class="product-info-description" id="product-description"></p>
+                
+                <div class="size-selector">
+                    <label for="size">Размер:</label>
+                    <select id="size">
+                        <option value="S">S</option>
+                        <option value="M">M</option>
+                        <option value="L">L</option>
+                        <option value="XL">XL</option>
+                    </select>
+                </div>
+                
+                <button class="add-to-cart" id="add-to-cart-btn">Добавить в корзину</button>
+            </div>
+        </div>
+
+        <!-- Футер -->
+        <footer>
+            <div class="footer-left">ДОСТАВКА И ВОЗВРАт</div>
+            <div class="footer-center">О НАС</div>
+            <div class="footer-right">КОНТАКТЫ</div>
+        </footer>
+    </div>
+
+    <script>
+        // Данные о товарах
+        const products = {
+            1: {
+                brand: "PHRARI",
+                title: "DYED T-SHIRT \"ANTAGONIST\"",
+                price: "2940 ₽",
+                image: "photo/img-1.png",
+                description: "Футболка с уникальным дизайном, выполненная из высококачественного хлопка. Модель \"ANTAGONIST\" отличается необычным окрашиванием и принтом. Идеально сочетается с джинсами и кедами."
+            },
+            2: {
+                brand: "PHRARI",
+                title: "HOODIE \"I LIKE\"",
+                price: "6390 ₽",
+                image: "photo/img-3.png",
+                description: "Теплое и уютное худи с капюшоном. Материал: хлопок с начесом. Идеально для холодных дней. Удобный крой позволяет носить его как повседневную одежду."
+            },
+            3: {
+                brand: "DX",
+                title: "DX \"BASTARD\" JEANS",
+                price: "3990 ₽",
+                image: "photo/img-6-Photoroom.png",
+                description: "Джинсы с прямым кроем. Выполнены из денима высокой плотности. Модель \"BASTARD\" с эффектом поношенности. Универсальная модель, подходящая для любого стиля."
+            },
+            4: {
+                brand: "GHETTO",
+                title: "WINTER PARKA \"FROST\"",
+                price: "8990 ₽",
+                image: "photo/img-5.png",
+                description: "Теплая парка для зимнего сезона. Утеплена синтепоном, имеет меховую отделку капюшона. Водоотталкивающая пропитка защищает от снега и дождя."
+            },
+            5: {
+                brand: "GHETTO",
+                title: "BASIC T-SHIRT \"ESSENTIAL\"",
+                price: "2490 ₽",
+                image: "photo/img-2.png",
+                description: "Базовая футболка из органического хлопка. Универсальный предмет гардероба. Мягкая ткань обеспечивает комфорт при ношении в течение всего дня."
+            },
+            6: {
+                brand: "GHETTO",
+                title: "BEANIE \"URBAN\"",
+                price: "1990 ₽",
+                image: "photo/img-4-Photoroom.png",
+                description: "Шапка бини, выполненная из шерсти и акрила. Согреет в холодную погоду и дополнит ваш образ. Эластичный материал обеспечивает идеальную посадку."
+            }
+        };
+
+        // Инициализация корзины
+        function initializeCart() {
+            if (!localStorage.getItem('cart')) {
+                localStorage.setItem('cart', JSON.stringify([]));
+            }
+            updateCartCount();
+        }
+        
+        // Обновление счетчика корзины
+        function updateCartCount() {
+            const cart = JSON.parse(localStorage.getItem('cart'));
+            const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
+            document.getElementById('cart-count').textContent = totalItems;
+        }
+        
+        // Добавление товара в корзину
+        function addToCart(productId, size) {
+            const cart = JSON.parse(localStorage.getItem('cart'));
+            const existingItemIndex = cart.findIndex(item => item.id === productId && item.size === size);
+            
+            if (existingItemIndex > -1) {
+                // Если товар уже есть в корзине, увеличиваем количество
+                cart[existingItemIndex].quantity += 1;
+            } else {
+                // Если товара нет в корзине, добавляем новый
+                cart.push({
+                    id: productId,
+                    size: size,
+                    quantity: 1
+                });
+            }
+            
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartCount();
+            alert(`Товар "${products[productId].title}" размера ${size} добавлен в корзину!`);
+        }
+
+        // Получаем ID товара из URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const productId = urlParams.get('id');
+        
+        // Находим товар по ID
+        const product = products[productId];
+        
+        // Если товар найден, отображаем его
+        if (product) {
+            document.getElementById('product-image').src = product.image;
+            document.getElementById('product-brand').textContent = product.brand;
+            document.getElementById('product-title').textContent = product.title;
+            document.getElementById('product-price').textContent = product.price;
+            document.getElementById('product-description').textContent = product.description;
+            document.title = `${product.title} - Ghetto Christmas`;
+        } else {
+            // Если товар не найден, выводим сообщение об ошибке
+            document.querySelector('.product-detail').innerHTML = `
+                <div style="text-align: center; width: 100%; padding: 60px 0;">
+                    <h2>Товар не найден</h2>
+                    <p>Извините, запрашиваемый товар не существует.</p>
+                    <a href="index.html" class="back-button" style="margin-top: 20px;">
+                        <i class="fas fa-arrow-left"></i>
+                        <span>Вернуться в магазин</span>
+                    </a>
+                </div>
+            `;
+        }
+        
+        // Обработчик для кнопки "Добавить в корзину"
+        document.getElementById('add-to-cart-btn').addEventListener('click', function() {
+            const selectedSize = document.getElementById('size').value;
+            addToCart(productId, selectedSize);
+        });
+        
+        // Обработчик для корзины
+        document.getElementById('cart-icon').addEventListener('click', function() {
+            window.location.href = 'cart.html';
+        });
+        
+        // Инициализация при загрузке страницы
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeCart();
+        });
+    </script>
+</body>
+</html>
