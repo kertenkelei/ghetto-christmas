@@ -48,13 +48,11 @@
             position: absolute;
             left: 50%;
             transform: translateX(-50%);
-            z-index: 1;
         }
         
         /* Меню категорий */
         .categories-menu {
             position: relative;
-            z-index: 1000;
         }
         
         .menu-toggle {
@@ -101,17 +99,10 @@
         }
         
         /* Корзина */
-        .cart-wrapper {
-            position: relative;
-            z-index: 1000;
-        }
-        
         .cart-icon {
             font-size: 20px;
             cursor: pointer;
             position: relative;
-            display: flex;
-            align-items: center;
         }
         
         .cart-count {
@@ -127,12 +118,6 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-        
-        .cart-count.show {
-            opacity: 1;
         }
         
         /* Коллекции */
@@ -162,7 +147,6 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: transparent !important; /* Гарантированно прозрачный фон */
         }
         
         .product-image {
@@ -203,6 +187,8 @@
             cursor: pointer;
             transition: all 0.3s;
             margin-top: auto;
+            text-decoration: none;
+            display: inline-block;
         }
         
         .cta-button:hover {
@@ -234,15 +220,14 @@
             text-align: right;
         }
         
-        /* Адаптивность для планшетов */
+        /* Адаптивность */
         @media (max-width: 900px) {
-            body {
-                padding: 30px;
-            }
-            
             .products-grid {
                 grid-template-columns: repeat(2, 1fr);
-                gap: 30px;
+            }
+            
+            body {
+                padding: 30px;
             }
             
             .image-container {
@@ -252,83 +237,24 @@
             .brand-name {
                 position: static;
                 transform: none;
-                order: 1;
-                width: 100%;
-                margin: 15px 0;
-                text-align: center;
-            }
-            
-            .categories-menu {
-                order: 0;
-            }
-            
-            .cart-wrapper {
-                order: 2;
-            }
-        }
-        
-        /* Адаптивность для мобильных */
-        @media (max-width: 600px) {
-            body {
-                padding: 15px 10px;
+                margin: 0 auto;
             }
             
             .top-nav {
-                margin-bottom: 40px;
-                padding: 10px 0;
-                flex-wrap: nowrap;
-                justify-content: space-between;
-                position: relative;
+                flex-direction: column;
+                gap: 15px;
             }
-            
+        }
+        
+        @media (max-width: 600px) {
             .products-grid {
                 grid-template-columns: 1fr;
-                gap: 30px;
-                margin-top: 30px;
-            }
-            
-            .image-container {
-                height: 220px;
-                background-color: transparent !important;
-            }
-            
-            .brand-name {
-                font-size: 18px;
-                margin: 0;
-                position: absolute;
-                left: 50%;
-                transform: translateX(-50%);
-                width: auto;
-                max-width: 60%;
-                order: 0;
-                top: 50%;
-                transform: translate(-50%, -50%);
-            }
-            
-            .categories-menu {
-                order: 1;
-                z-index: 1001;
-            }
-            
-            .cart-wrapper {
-                order: 2;
-                z-index: 1001;
-                position: absolute;
-                right: 0;
-                top: 50%;
-                transform: translateY(-50%);
-            }
-            
-            .collections {
-                margin-bottom: 50px;
             }
             
             footer {
                 flex-direction: column;
                 gap: 15px;
                 text-align: center;
-                margin-top: 50px;
-                padding-top: 20px;
             }
             
             .footer-left, .footer-center, .footer-right {
@@ -336,62 +262,12 @@
                 text-align: center;
             }
             
-            /* Мобильное меню */
-            .menu-toggle span {
-                display: none;
-            }
-            
-            .menu-toggle {
-                padding: 8px;
-                border: none;
-                font-size: 16px;
-                background: none;
-            }
-            
-            .categories-dropdown {
-                left: 0;
-                min-width: 160px;
-            }
-            
-            /* Улучшения для корзины на мобильных */
-            .cart-icon {
-                font-size: 20px;
-            }
-            
-            .cart-count {
-                top: -6px;
-                right: -6px;
-                width: 16px;
-                height: 16px;
-                font-size: 10px;
-            }
-        }
-
-        /* Дополнительные улучшения для очень маленьких экранов */
-        @media (max-width: 400px) {
-            .brand-name {
-                font-size: 16px;
-                letter-spacing: 1px;
-            }
-            
-            .product-title {
-                font-size: 13px;
-            }
-            
-            .product-price {
-                font-size: 15px;
+            body {
+                padding: 20px;
             }
             
             .image-container {
-                height: 200px;
-            }
-            
-            .menu-toggle {
-                padding: 6px;
-            }
-            
-            .cart-icon {
-                font-size: 18px;
+                height: 220px;
             }
         }
     </style>
@@ -403,7 +279,7 @@
             <div class="categories-menu">
                 <button class="menu-toggle">
                     <span>Меню</span>
-                    <i class="fas fa-bars"></i>
+                    <i class="fas fa-chevron-down"></i>
                 </button>
                 <div class="categories-dropdown">
                     <a href="#">Худи</a>
@@ -416,11 +292,9 @@
             
             <div class="brand-name">GHETTO CHRISTMAS</div>
             
-            <div class="cart-wrapper">
-                <div class="cart-icon">
-                    <i class="fas fa-shopping-bag"></i>
-                    <span class="cart-count">0</span>
-                </div>
+            <div class="cart-icon" id="cart-icon">
+                <i class="fas fa-shopping-bag"></i>
+                <span class="cart-count" id="cart-count">0</span>
             </div>
         </nav>
 
@@ -435,7 +309,7 @@
                     <div class="product-brand">PHRARI</div>
                     <h3 class="product-title">DYED T-SHIRT "ANTAGONIST"</h3>
                     <div class="product-price">2940 ₽</div>
-                    <button class="cta-button">Посмотреть</button>
+                    <a href="product.html?id=1" class="cta-button">Посмотреть</a>
                 </div>
                 
                 <!-- Товар 2 -->
@@ -446,7 +320,7 @@
                     <div class="product-brand">PHRARI</div>
                     <h3 class="product-title">HOODIE "I LIKE"</h3>
                     <div class="product-price">6390 ₽</div>
-                    <button class="cta-button">Посмотреть</button>
+                    <a href="product.html?id=2" class="cta-button">Посмотреть</a>
                 </div>
                 
                 <!-- Товар 3 -->
@@ -457,7 +331,7 @@
                     <div class="product-brand">DX</div>
                     <h3 class="product-title">DX "BASTARD" JEANS</h3>
                     <div class="product-price">3990 ₽</div>
-                    <button class="cta-button">Посмотреть</button>
+                    <a href="product.html?id=3" class="cta-button">Посмотреть</a>
                 </div>
 
                 <!-- Товар 4 -->
@@ -468,7 +342,7 @@
                     <div class="product-brand">GHETTO</div>
                     <h3 class="product-title">WINTER PARKA "FROST"</h3>
                     <div class="product-price">8990 ₽</div>
-                    <button class="cta-button">Посмотреть</button>
+                    <a href="product.html?id=4" class="cta-button">Посмотреть</a>
                 </div>
                 
                 <!-- Товар 5 -->
@@ -479,7 +353,7 @@
                     <div class="product-brand">GHETTO</div>
                     <h3 class="product-title">BASIC T-SHIRT "ESSENTIAL"</h3>
                     <div class="product-price">2490 ₽</div>
-                    <button class="cta-button">Посмотреть</button>
+                    <a href="product.html?id=5" class="cta-button">Посмотреть</a>
                 </div>
                 
                 <!-- Товар 6 -->
@@ -490,7 +364,7 @@
                     <div class="product-brand">GHETTO</div>
                     <h3 class="product-title">BEANIE "URBAN"</h3>
                     <div class="product-price">1990 ₽</div>
-                    <button class="cta-button">Посмотреть</button>
+                    <a href="product.html?id=6" class="cta-button">Посмотреть</a>
                 </div>
             </div>
         </section>
@@ -504,20 +378,26 @@
     </div>
 
     <script>
-        // Обработчики для кнопок "Посмотреть"
-        const viewButtons = document.querySelectorAll('.cta-button');
-        viewButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                alert('Просмотр товара. В реальном сайте здесь можно реализовать страницу с подробным описанием товара.');
-            });
-        });
+        // Инициализация корзины
+        function initializeCart() {
+            if (!localStorage.getItem('cart')) {
+                localStorage.setItem('cart', JSON.stringify([]));
+            }
+            updateCartCount();
+        }
+        
+        // Обновление счетчика корзины
+        function updateCartCount() {
+            const cart = JSON.parse(localStorage.getItem('cart'));
+            const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
+            document.getElementById('cart-count').textContent = totalItems;
+        }
         
         // Открытие/закрытие меню категорий
         const menuToggle = document.querySelector('.menu-toggle');
         const categoriesDropdown = document.querySelector('.categories-dropdown');
         
-        menuToggle.addEventListener('click', function(e) {
-            e.stopPropagation();
+        menuToggle.addEventListener('click', function() {
             categoriesDropdown.classList.toggle('show');
         });
         
@@ -529,46 +409,15 @@
         });
         
         // Обработчик для корзины
-        const cartIcon = document.querySelector('.cart-icon');
-        const cartCount = document.querySelector('.cart-count');
-        let cartItems = 0;
-        
-        // Функция для обновления отображения счетчика
-        function updateCartCount() {
-            cartCount.textContent = cartItems;
-            if (cartItems === 0) {
-                cartCount.classList.remove('show');
-            } else {
-                cartCount.classList.add('show');
-            }
-        }
-        
-        // Инициализация счетчика
-        updateCartCount();
-        
+        const cartIcon = document.getElementById('cart-icon');
         cartIcon.addEventListener('click', function() {
-            alert('Корзина. В реальном сайте здесь будет отображение добавленных товаров.');
+            window.location.href = 'cart.html';
         });
-
-        // Замена иконки меню на мобильных устройствах
-        function updateMenuIcon() {
-            const menuIcon = document.querySelector('.menu-toggle i');
-            if (window.innerWidth <= 600) {
-                menuIcon.className = 'fas fa-bars';
-                if (document.querySelector('.menu-toggle span')) {
-                    document.querySelector('.menu-toggle span').style.display = 'none';
-                }
-            } else {
-                menuIcon.className = 'fas fa-chevron-down';
-                if (document.querySelector('.menu-toggle span')) {
-                    document.querySelector('.menu-toggle span').style.display = 'inline';
-                }
-            }
-        }
-
-        // Вызов при загрузке и изменении размера окна
-        window.addEventListener('load', updateMenuIcon);
-        window.addEventListener('resize', updateMenuIcon);
+        
+        // Инициализация при загрузке страницы
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeCart();
+        });
     </script>
 </body>
 </html>
